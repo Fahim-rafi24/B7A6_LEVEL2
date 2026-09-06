@@ -1,0 +1,658 @@
+{
+	"info": {
+		"_postman_id": "citycare-pro-api-b7a6",
+		"name": "CityCare Pro API — City Complaint & Service Platform (B7A6)",
+		"description": "Comprehensive RESTful API documentation for CityCare Pro Platform, covering 3 Roles (Citizen, Staff, Admin), Firebase Google Auth, Universal Table Soft-Delete Archiving, and Stripe Payment Integration.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Register User (Citizen/Staff/Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Citizen\",\n    \"email\": \"citizen@citycare.com\",\n    \"password\": \"citizen123456\",\n    \"role\": \"CITIZEN\",\n    \"phone\": \"+1-555-0102\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login (Email & Password) — Triggers Email Alert",
+					"request": {
+						"description": "Authenticates user, issues JWT access/refresh token pair, and dispatches an automated Security Alert Email via Nodemailer (Gmail SMTP).",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@citycare.com\",\n    \"password\": \"admin123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Firebase Google Auth (GCP Social Login)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idToken\": \"mock_or_real_firebase_google_id_token\",\n    \"role\": \"CITIZEN\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/firebase-google",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "firebase-google"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "refresh-token"]
+						}
+					}
+				},
+				{
+					"name": "Get Current Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "me"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Complaints Management",
+			"item": [
+				{
+					"name": "Submit Regular Complaint (Free Civic Issue)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Broken streetlight on 7th avenue\",\n    \"description\": \"The streetlight has been flickering and completely off for the last 3 days.\",\n    \"category\": \"Electricity\",\n    \"priority\": \"MEDIUM\",\n    \"location\": \"7th Avenue corner with Elm St\",\n    \"isPremiumService\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Submit Complaint with Local Multer File Upload (multipart/form-data)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Hazardous Sinkhole on 5th Avenue",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Massive depression in the middle of roadway posing imminent traffic danger.",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "ROADS",
+									"type": "text"
+								},
+								{
+									"key": "priority",
+									"value": "HIGH",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "5th Ave & 42nd St",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "40.7535",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "-73.9832",
+									"type": "text"
+								},
+								{
+									"key": "isPremiumService",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"description": "Select an image file (JPG, PNG, WEBP) to upload locally via Multer"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Submit Premium / Specialized Service Request (Paid)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Express Hazardous Waste Removal\",\n    \"description\": \"Specialized construction chemical debris requires certified expedited clearance.\",\n    \"category\": \"Waste\",\n    \"priority\": \"URGENT\",\n    \"location\": \"Plot 44, Industrial Area\",\n    \"isPremiumService\": true,\n    \"serviceFee\": 25.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "List Complaints (Pagination, Filtering, Search)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints?page=1&limit=10&status=PENDING&priority=HIGH&search=pothole",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "PENDING" },
+								{ "key": "priority", "value": "HIGH" },
+								{ "key": "search", "value": "pothole" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Complaint By ID or Tracking Number",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/CC-2026-0042",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "CC-2026-0042"]
+						}
+					}
+				},
+				{
+					"name": "Update Complaint Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "PATCH",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Updated description with additional landmark information.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}"]
+						}
+					}
+				},
+				{
+					"name": "Soft Delete Complaint (Moves to complaints_info_del)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Duplicate report submitted by citizen.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}"]
+						}
+					}
+				},
+				{
+					"name": "Restore Complaint (From complaints_info_del)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}/restore",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}", "restore"]
+						}
+					}
+				},
+				{
+					"name": "Assign Department & Staff (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "PATCH",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"departmentId\": \"{{departmentId}}\",\n    \"assignedStaffId\": \"{{staffUserId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}/assign",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}", "assign"]
+						}
+					}
+				},
+				{
+					"name": "Update Status & Timeline (Staff/Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "PATCH",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"IN_PROGRESS\",\n    \"content\": \"Field team deployed\",\n    \"desc\": \"Technicians inspected site and began repair work.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}", "status"]
+						}
+					}
+				},
+				{
+					"name": "Add Citizen Feedback (Rating & Review)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 5,\n    \"comment\": \"Pothole was repaired within 48 hours. Excellent service!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/complaints/{{complaintId}}/feedback",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "complaints", "{{complaintId}}", "feedback"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Payment Gateway (Stripe Integration)",
+			"item": [
+				{
+					"name": "Initiate Stripe Checkout (Premium Services)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"complaintId\": \"{{premiumComplaintId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/initiate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "payments", "initiate"]
+						}
+					}
+				},
+				{
+					"name": "Verify Payment Session",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/verify?session_id={{sessionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "payments", "verify"],
+							"query": [{ "key": "session_id", "value": "{{sessionId}}" }]
+						}
+					}
+				},
+				{
+					"name": "My Payment History (Citizen)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/my-payments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "payments", "my-payments"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Admin & Analytics",
+			"item": [
+				{
+					"name": "Dashboard Statistics & SLA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/dashboard-stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "dashboard-stats"]
+						}
+					}
+				},
+				{
+					"name": "Category Distribution Analytics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/category-analytics",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "category-analytics"]
+						}
+					}
+				},
+				{
+					"name": "System Audit Logs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/audit-logs?page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "audit-logs"]
+						}
+					}
+				},
+				{
+					"name": "View Deleted Complaints (complaints_info_del)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/deleted-complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "deleted-complaints"]
+						}
+					}
+				},
+				{
+					"name": "Manage Users (List with Role Filter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/users?role=STAFF",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "users"]
+						}
+					}
+				},
+				{
+					"name": "Update User Role (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "PATCH",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"STAFF\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}/role",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "users", "{{userId}}", "role"]
+						}
+					}
+				},
+				{
+					"name": "Soft Delete User (Moves to users_del)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"User requested account removal.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "users", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "List Departments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/departments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "departments"]
+						}
+					}
+				},
+				{
+					"name": "Create Department",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+						},
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Environmental Protection\",\n    \"code\": \"ENV\",\n    \"description\": \"Air quality, noise control, and emission regulations\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/departments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "departments"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "complaintId",
+			"value": ""
+		},
+		{
+			"key": "departmentId",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}
