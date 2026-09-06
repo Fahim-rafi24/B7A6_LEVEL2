@@ -17,6 +17,9 @@ import path from 'path';
 
 const app = express();
 
+// ── Trust Proxy for Vercel / Reverse Proxies ──
+app.set('trust proxy', 1);
+
 // ── Security Headers & Rate Limiting ──
 app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },

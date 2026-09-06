@@ -6,6 +6,7 @@ export const apiLimiter = rateLimit({
     max: 500, // limit each IP to 100 requests per windowMs
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { xForwardedForHeader: false, default: false },
     message: {
         statusCode: 429,
         success: false,
@@ -19,6 +20,7 @@ export const authLimiter = rateLimit({
     max: 20, // max 20 login/register attempts per 15 minutes
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { xForwardedForHeader: false, default: false },
     message: {
         statusCode: 429,
         success: false,

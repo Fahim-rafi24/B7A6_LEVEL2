@@ -38,9 +38,7 @@ export function errorHandler(err: any, _req: Request, res: Response, _next: Next
         return sendError(res, code, err.message);
     }
 
-    if (env.NODE_ENV === 'development') {
-        console.error('Unhandled error:', err);
-    }
+    console.error('Unhandled error:', err);
 
     return sendError(res, httpStatus.INTERNAL_SERVER_ERROR, err.message || 'Internal server error');
 }
