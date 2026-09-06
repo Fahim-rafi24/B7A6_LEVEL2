@@ -1,0 +1,15 @@
+model AuditLog {
+    id          String   @id @default(uuid())
+    actorId     String?
+    actorName   String
+    actorRole   String
+    action      String
+    targetType  String
+    targetId    String?
+    targetTitle String?
+    details     String?
+    ipAddress   String?
+    createdAt   DateTime @default(now())
+
+    @@map("audit_logs")
+}

@@ -1,0 +1,37 @@
+model Payment {
+    id            String    @id @default(uuid())
+    complaintId   String
+    complaint     Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+    userId        String
+    user          User      @relation(fields: [userId], references: [id])
+
+    amount        Decimal   @db.Decimal(10, 2)
+    currency      String    @default("USD")
+    provider      String    @default("STRIPE")
+    transactionId String?
+    sessionId     String?
+    status        String    @default("PENDING")
+
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    @@map("payments")
+}
+
+model PaymentDel {
+    id                String   @id @default(uuid())
+    originalPaymentId String
+    complaintId       String
+    userId            String
+    amount            Decimal  @db.Decimal(10, 2)
+    currency          String
+    transactionId     String?
+    status            String
+    dataSnapshot      Json
+    deletedBy         String?
+    deletedAt         DateTime @default(now())
+    deletionReason    String?
+
+    @@map("payments_del")
+}

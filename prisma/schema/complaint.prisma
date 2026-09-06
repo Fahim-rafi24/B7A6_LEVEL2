@@ -1,0 +1,107 @@
+model Complaint {
+    id               String              @id @default(uuid())
+    trackingNumber   String              @unique
+    title            String
+    description      String
+    category         String
+    priority         String              @default("MEDIUM")
+    status           String              @default("PENDING")
+    location         String
+    latitude         Float?
+    longitude        Float?
+    imageUrl         String?
+
+    citizenId        String
+    citizen          User                @relation("CitizenComplaints", fields: [citizenId], references: [id])
+
+    departmentId     String?
+    department       Department?         @relation(fields: [departmentId], references: [id])
+
+    assignedStaffId  String?
+    assignedStaff    User?               @relation("StaffComplaints", fields: [assignedStaffId], references: [id])
+
+    isPremiumService Boolean             @default(false)
+    serviceFee       Decimal             @default(0.00) @db.Decimal(10, 2)
+    paymentStatus    String              @default("NOT_APPLICABLE")
+
+    resolvedAt       DateTime?
+    createdAt        DateTime            @default(now())
+    updatedAt        DateTime            @updatedAt
+
+    timelines        ComplaintTimeline[]
+    feedback         Feedback?
+    payments         Payment[]
+
+    @@map("complaints_info")
+}
+
+model ComplaintDel {
+    id                  String   @id @default(uuid())
+    originalComplaintId String
+    trackingNumber      String
+    title               String
+    description         String
+    category            String
+    priority            String
+    status              String
+    location            String
+    citizenId           String
+    departmentId        String?
+    assignedStaffId     String?
+    imageUrl            String?
+    isPremiumService    Boolean  @default(false)
+    serviceFee          Decimal  @default(0.00) @db.Decimal(10, 2)
+    paymentStatus       String
+    dataSnapshot        Json
+    deletedBy           String?
+    deletedAt           DateTime @default(now())
+    deletionReason      String?
+
+    @@map("complaints_info_del")
+}
+
+model ComplaintTimeline {
+    id          String    @id @default(uuid())
+    complaintId String
+    complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+    actorId     String?
+    actor       User?     @relation(fields: [actorId], references: [id])
+
+    status      String
+    content     String
+    desc        String?
+    createdAt   DateTime  @default(now())
+
+    @@map("complaint_timelines")
+}
+
+model Feedback {
+    id          String    @id @default(uuid())
+    complaintId String    @unique
+    complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+    citizenId   String
+    citizen     User      @relation(fields: [citizenId], references: [id])
+
+    rating      Int       @default(5)
+    comment     String?
+    createdAt   DateTime  @default(now())
+
+    @@map("feedbacks")
+}
+
+model FeedbackDel {
+    id                 String   @id @default(uuid())
+    originalFeedbackId String
+    complaintId        String
+    citizenId          String
+    rating             Int
+    comment            String?
+    dataSnapshot       Json
+    deletedBy          String?
+    deletedAt          DateTime @default(now())
+    deletionReason     String?
+
+    @@map("feedbacks_del")
+}

@@ -1,0 +1,50 @@
+model User {
+    id                  String              @id @default(uuid())
+    name                String
+    email               String              @unique
+    password            String?
+    googleUid           String?             @unique
+    role                String              @default("CITIZEN")
+    departmentId        String?
+    department          Department?         @relation(fields: [departmentId], references: [id])
+    phone               String?
+    avatarUrl           String?
+    createdAt           DateTime            @default(now())
+    updatedAt           DateTime            @updatedAt
+
+    refreshTokens       RefreshToken[]
+    submittedComplaints Complaint[]         @relation("CitizenComplaints")
+    assignedComplaints  Complaint[]         @relation("StaffComplaints")
+    timelines           ComplaintTimeline[]
+    feedbacks           Feedback[]
+    payments            Payment[]
+
+    @@map("users")
+}
+
+model UserDel {
+    id             String   @id @default(uuid())
+    originalUserId String
+    name           String
+    email          String
+    role           String
+    departmentId   String?
+    dataSnapshot   Json
+    deletedBy      String?
+    deletedAt      DateTime @default(now())
+    deletionReason String?
+
+    @@map("users_del")
+}
+
+model RefreshToken {
+    id        String   @id @default(uuid())
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    tokenHash String
+    revoked   Boolean  @default(false)
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+
+    @@map("refresh_tokens")
+}
