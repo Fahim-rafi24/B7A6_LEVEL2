@@ -14,7 +14,7 @@ export async function issueTokenPair(userId: string, role: string) {
     // store into DB refresh token with hash and expiration time
     const tokenHash = await hashToken(refreshToken);
     const expiresAt = new Date(Date.now() + env.REFRESH_TOKEN_MAX_AGE);
-    await storeRefreshToken(userId, tokenHash, expiresAt);
+    await storeRefreshToken(userId, tokenHash, expiresAt, jti);
 
     return { accessToken, refreshToken };
 }

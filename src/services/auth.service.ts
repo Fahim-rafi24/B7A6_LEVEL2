@@ -91,9 +91,9 @@ export async function compareToken(token: string, hash: string): Promise<boolean
     return bcrypt.compare(token, hash);
 }
 
-export async function storeRefreshToken(userId: string, tokenHash: string, expiresAt: Date) {
+export async function storeRefreshToken(userId: string, tokenHash: string, expiresAt: Date, id?: string) {
     return prisma.refreshToken.create({
-        data: { userId, tokenHash, expiresAt },
+        data: { id, userId, tokenHash, expiresAt },
     });
 }
 
