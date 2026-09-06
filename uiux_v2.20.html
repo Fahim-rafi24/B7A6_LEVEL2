@@ -1,0 +1,2929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CityCare Pro — Report & Resolve</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ── CSS Variables ── */
+        :root {
+            --primary: #7b2cbf;
+            --primary-light: #9d4edd;
+            --primary-dark: #5a189a;
+            --primary-gradient: linear-gradient(135deg, #5a189a 0%, #9d4edd 100%);
+            --secondary: #10002b;
+            --surface: #ffffff;
+            --surface-alt: #f1f5f9;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.10), 0 8px 24px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--surface-alt);
+            color: var(--text);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-alt);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+
+        /* ── Utilities ── */
+        .container-custom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 14px rgba(123, 44, 191, 0.30);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(123, 44, 191, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-alt);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.30);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.30);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1.5px solid var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.75rem;
+        }
+
+        .btn-xs {
+            padding: 4px 12px;
+            font-size: 0.7rem;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-assigned {
+            background: #e0aaff;
+            color: #3c096c;
+        }
+
+        .badge-progress {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .badge-resolved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-closed {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-urgent {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .badge-review {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* ── Status dot ── */
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            margin-right: 6px;
+        }
+
+        .status-dot.green {
+            background: #10b981;
+        }
+
+        .status-dot.yellow {
+            background: #f59e0b;
+        }
+
+        .status-dot.red {
+            background: #ef4444;
+        }
+
+        .status-dot.blue {
+            background: #9d4edd;
+        }
+
+        .status-dot.gray {
+            background: #94a3b8;
+        }
+
+        .status-dot.purple {
+            background: #8b5cf6;
+        }
+
+        /* ── Form ── */
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: var(--surface);
+            color: var(--text);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(123, 44, 191, 0.10);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:disabled {
+            background: var(--surface-alt);
+            cursor: not-allowed;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .table-wrap th {
+            text-align: left;
+            padding: 12px 16px;
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .table-wrap td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .table-wrap tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-wrap tr:hover td {
+            background: var(--surface-alt);
+        }
+
+        /* ── Hero ── */
+        .hero-gradient {
+            background: linear-gradient(160deg, #10002b 0%, #240046 50%, #10002b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 60%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(123, 44, 191, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-gradient::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 50%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .text-gradient {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Toast ── */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-xl);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: slideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: bottom right;
+        }
+
+        .toast-success {
+            border-left-color: #10b981;
+        }
+
+        .toast-error {
+            border-left-color: #ef4444;
+        }
+
+        .toast-warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast-info {
+            border-left-color: #9d4edd;
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .toast-message {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            background: none;
+            border: none;
+            font-size: 1rem;
+            padding: 4px;
+        }
+
+        .toast-close:hover {
+            color: var(--text);
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(40px) scale(0.96);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.50);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            max-width: 480px;
+            width: 100%;
+            padding: 32px;
+            box-shadow: var(--shadow-xl);
+            animation: modalIn 0.30s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.94) translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ── Page sections ── */
+        .page-section {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Role switcher ── */
+        .role-btn {
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .role-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ── Dashboard tabs ── */
+        .dash-tab {
+            padding: 8px 20px;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.8125rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .dash-tab:hover {
+            color: var(--text);
+            background: var(--surface-alt);
+        }
+
+        .dash-tab.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(123, 44, 191, 0.25);
+        }
+
+        /* ── Stat card ── */
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon-blue {
+            background: #e0aaff;
+            color: #3c096c;
+        }
+
+        .stat-icon-yellow {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stat-icon-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .stat-icon-purple {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .stat-icon-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stat-icon-gray {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .stat-icon-orange {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        /* ── Filter chips ── */
+        .filter-chip {
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+            padding-left: 16px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 9999px;
+            background: var(--border);
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px var(--border);
+        }
+
+        .timeline-item.active::before {
+            background: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-item .time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .timeline-item .content {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .timeline-item .desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* ── Dropdown ── */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            min-width: 200px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            z-index: 60;
+            margin-top: 4px;
+        }
+
+        .dropdown-menu.open {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: var(--radius);
+            font-size: 0.8125rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: var(--surface-alt);
+            color: var(--primary);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--text-muted);
+        }
+
+        .dropdown-item:hover i {
+            color: var(--primary);
+        }
+
+        /* ── Payment cards ── */
+        .payment-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .payment-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .payment-card.selected {
+            border-color: var(--primary);
+            background: #faf5ff;
+            box-shadow: 0 0 0 4px rgba(123, 44, 191, 0.12);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .container-custom {
+                padding: 0 16px;
+            }
+
+            .modal-box {
+                padding: 24px;
+                margin: 16px;
+            }
+
+            .toast-container {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: 100%;
+            }
+
+            .dropdown-menu {
+                right: -16px;
+                min-width: 180px;
+            }
+
+            .hero-gradient {
+                padding-top: 80px !important;
+                padding-bottom: 60px !important;
+            }
+
+            .hero-gradient h1 {
+                font-size: 2rem !important;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .table-wrap {
+                font-size: 0.75rem;
+            }
+
+            .table-wrap th,
+            .table-wrap td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .role-btn {
+                padding: 4px 10px;
+                font-size: 0.6rem;
+            }
+
+            .dash-tab {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+
+            .btn-primary,
+            .btn-secondary,
+            .btn-success,
+            .btn-danger {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* ── Misc ── */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--border);
+            margin-bottom: 12px;
+        }
+
+        .empty-state h4 {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .demo-banner {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            font-size: 0.8125rem;
+            color: #78350f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .demo-banner i {
+            color: #b45309;
+            font-size: 1.1rem;
+        }
+
+        .role-indicator {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .role-indicator.citizen {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .role-indicator.staff {
+            background: #e0aaff;
+            color: #3c096c;
+        }
+
+        .role-indicator.admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .avatar-sm {
+            width: 28px;
+            height: 28px;
+            font-size: 0.7rem;
+        }
+
+        .avatar-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .avatar-primary-light {
+            background: #e0aaff;
+            color: var(--primary);
+        }
+
+        .avatar-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .avatar-purple {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .avatar-orange {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .avatar-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ── Priority badge ── */
+        .priority-high {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .priority-medium {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .priority-low {
+            color: #65a30d;
+            font-weight: 600;
+        }
+
+        .priority-urgent {
+            color: #b91c1c;
+            font-weight: 800;
+        }
+
+        /* ── Skeleton loading ── */
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s ease-in-out infinite;
+            border-radius: var(--radius);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* ── Home Analytics Section ── */
+        .analytics-home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .analytics-home-grid .stat-card {
+            padding: 16px 20px;
+        }
+
+        .analytics-home-grid .stat-card .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .analytics-home-grid .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .analytics-home-grid .stat-card .stat-change {
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.up {
+            color: #10b981;
+        }
+
+        .stat-change.down {
+            color: #ef4444;
+        }
+
+        .category-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 0;
+        }
+
+        .category-bar .bar-track {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .category-bar .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .category-bar .bar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            min-width: 100px;
+            color: var(--text-secondary);
+        }
+
+        .category-bar .bar-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 36px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══ TOAST CONTAINER ═══ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ═══ AUTH MODAL ═══ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold" id="authModalTitle">Sign In</h2>
+                <button class="text-2xl text-text-muted hover:text-text transition"
+                    onclick="closeAuthModal()">&times;</button>
+            </div>
+            <div class="flex bg-surface-alt rounded-xl p-1 mb-6">
+                <button class="flex-1 py-2 rounded-lg font-medium text-sm transition" id="authTabLogin"
+                    onclick="switchAuthTab('login')">Sign In</button>
+                <button class="flex-1 py-2 rounded-lg font-medium text-sm transition text-text-muted"
+                    id="authTabRegister" onclick="switchAuthTab('register')">Sign Up</button>
+            </div>
+
+            <!-- Google Social Login (GCP) -->
+            <button type="button" class="w-full flex items-center justify-center gap-3 py-2.5 px-4 mb-4 border border-border rounded-xl font-medium text-sm text-text bg-surface hover:bg-surface-alt transition shadow-sm hover:border-primary" onclick="handleGoogleAuth()">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Continue with Google (GCP)</span>
+            </button>
+            <div class="flex items-center my-4">
+                <div class="flex-grow border-t border-border"></div>
+                <span class="flex-shrink mx-3 text-text-muted text-xs uppercase tracking-wider font-semibold">or email</span>
+                <div class="flex-grow border-t border-border"></div>
+            </div>
+            <div id="authLoginForm">
+                <div class="mb-4">
+                    <label class="form-label">Email</label>
+                    <input class="form-input" type="email" id="loginEmail" placeholder="you@city.com" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" />
+                </div>
+                <button class="btn-primary btn-block" onclick="handleAuth('login')">Sign In</button>
+                <p class="text-center text-xs text-text-muted mt-4">
+                    Demo: any email · password: demo123
+                </p>
+            </div>
+            <div id="authRegisterForm" style="display:none;">
+                <div class="mb-4">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-input" type="text" id="regName" placeholder="John Doe" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Email</label>
+                    <input class="form-input" type="email" id="regEmail" placeholder="you@city.com" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <input class="form-input" type="password" id="regPassword" placeholder="••••••••" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">I am a</label>
+                    <select class="form-input" id="regRole">
+                        <option value="citizen">Citizen — Reporting issues</option>
+                        <option value="staff">Staff — Department worker</option>
+                        <option value="admin">Admin — Platform manager</option>
+                    </select>
+                </div>
+                <button class="btn-primary btn-block" onclick="handleAuth('register')">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ NAVIGATION ═══ -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50">
+        <div class="container-custom flex items-center justify-between h-16">
+
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 text-xl font-extrabold tracking-tight"
+                onclick="navigateTo('home')">
+                <span class="text-gradient">CityCare</span>
+                <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">🏙️</span>
+            </a>
+
+            <!-- Center Nav (desktop) -->
+            <div class="hidden md:flex items-center gap-1">
+                <button class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-alt transition"
+                    onclick="navigateTo('home')">Home</button>
+                <button class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-alt transition"
+                    onclick="navigateTo('complaints')">Complaints</button>
+                <button class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-alt transition"
+                    onclick="navigateTo('dashboard')">Dashboard</button>
+
+                <!-- Pages Dropdown -->
+                <div class="relative" id="pagesDropdown">
+                    <button
+                        class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-alt transition flex items-center gap-1"
+                        onclick="toggleDropdown()">
+                        Pages <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div class="dropdown-menu" id="pagesMenu">
+                        <button class="dropdown-item" onclick="navigateTo('login')"><i
+                                class="fa-regular fa-right-to-bracket"></i> Login</button>
+                        <button class="dropdown-item" onclick="navigateTo('register')"><i
+                                class="fa-regular fa-user-plus"></i> Register</button>
+                        <button class="dropdown-item" onclick="navigateTo('complaint-detail')"><i
+                                class="fa-regular fa-file-lines"></i> Complaint Detail</button>
+                        <button class="dropdown-item" onclick="navigateTo('payment-init')"><i
+                                class="fa-regular fa-credit-card"></i> Payment Init</button>
+                        <button class="dropdown-item" onclick="navigateTo('payment-success')"><i
+                                class="fa-regular fa-circle-check"></i> Payment Success</button>
+                        <button class="dropdown-item" onclick="navigateTo('payment-cancel')"><i
+                                class="fa-regular fa-circle-xmark"></i> Payment Cancel</button>
+                        <button class="dropdown-item" onclick="navigateTo('new-complaint')"><i
+                                class="fa-regular fa-plus"></i> New Complaint</button>
+                        <button class="dropdown-item" onclick="navigateTo('admin-audit')"><i
+                                class="fa-regular fa-clock-rotate-left"></i> Audit Logs</button>
+                        <button class="dropdown-item" onclick="navigateTo('feedback')"><i
+                                class="fa-regular fa-star"></i> Feedback</button>
+                        <button class="dropdown-item" onclick="navigateTo('analytics')"><i
+                                class="fa-regular fa-chart-line"></i> Analytics</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-1 bg-surface-alt rounded-full p-1 border border-border">
+                    <button class="role-btn active" data-role="citizen" onclick="switchRole('citizen')">Citizen</button>
+                    <button class="role-btn" data-role="staff" onclick="switchRole('staff')">Staff</button>
+                    <button class="role-btn" data-role="admin" onclick="switchRole('admin')">Admin</button>
+                </div>
+                <button class="btn-primary text-sm px-5 py-2" id="navAuthBtn" onclick="openAuthModal()">
+                    <i class="fa-regular fa-user"></i> Sign In
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="pt-16">
+
+        <!-- ─── HOME ─── -->
+        <section class="page-section active" id="page-home">
+            <div class="hero-gradient text-white py-24 md:py-32 relative">
+                <div class="container-custom relative z-10">
+                    <div class="max-w-2xl">
+                        <div
+                            class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-medium mb-6 border border-white/10">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            Your voice matters
+                        </div>
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight mb-5">
+                            Report &amp; Resolve <br /><span class="text-gradient">City Issues</span> Faster
+                        </h1>
+                        <p class="text-white/70 text-lg max-w-lg mb-8">
+                            A smarter way for citizens to report complaints and for city departments to track, assign,
+                            and resolve them — all in one platform.
+                        </p>
+                        <div
+                            class="flex flex-col sm:flex-row gap-3 bg-white/10 backdrop-blur-sm p-2 rounded-2xl border border-white/10 max-w-xl">
+                            <input type="text" placeholder="Search complaints, categories, or locations..."
+                                class="flex-1 bg-transparent text-white placeholder-white/50 px-4 py-3 outline-none text-sm" />
+                            <button class="btn-primary whitespace-nowrap justify-center"><i
+                                    class="fa-solid fa-magnifying-glass"></i> Search</button>
+                        </div>
+                        <div class="flex gap-8 mt-10">
+                            <div><span class="text-2xl font-bold">12k+</span> <span
+                                    class="text-white/60 text-sm ml-1">Complaints</span></div>
+                            <div><span class="text-2xl font-bold">4.8k</span> <span
+                                    class="text-white/60 text-sm ml-1">Resolved</span></div>
+                            <div><span class="text-2xl font-bold">98%</span> <span
+                                    class="text-white/60 text-sm ml-1">Satisfaction</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-custom py-16">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold">Recent <span class="text-gradient">Complaints</span>
+                        </h2>
+                        <p class="text-text-secondary text-sm">Latest issues reported by citizens</p>
+                    </div>
+                    <button class="text-primary font-semibold text-sm hover:underline"
+                        onclick="navigateTo('complaints')">View all →</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="homeComplaintGrid">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+
+            <!-- ─── HOME ANALYTICS DASHBOARD (NEW) ─── -->
+            <div class="container-custom py-8 border-t border-border">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold">📊 <span class="text-gradient">Analytics</span> at a
+                            Glance</h2>
+                        <p class="text-text-secondary text-sm">Key metrics and department performance</p>
+                    </div>
+                    <button class="text-primary font-semibold text-sm hover:underline"
+                        onclick="navigateTo('analytics')">View full analytics →</button>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="analytics-home-grid mb-8" id="homeAnalyticsStats">
+                    <!-- populated by JS -->
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-4">Complaints by Category</h3>
+                    <div id="homeCategoryBars" class="space-y-2">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-border flex items-center justify-between text-sm">
+                        <span class="text-text-muted">Total complaints</span>
+                        <span class="font-bold text-primary" id="homeTotalComplaints">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border-y border-border py-16">
+                <div class="container-custom">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-4">Browse by <span
+                            class="text-gradient">Category</span></h2>
+                    <p class="text-center text-text-secondary mb-10">Find complaints by department</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="card p-6 text-center hover:border-primary cursor-pointer"
+                            onclick="navigateTo('complaints')">
+                            <div class="text-3xl mb-2">🛣️</div>
+                            <div class="font-semibold">Road &amp; Transport</div>
+                            <div class="text-xs text-text-muted">234 complaints</div>
+                        </div>
+                        <div class="card p-6 text-center hover:border-primary cursor-pointer"
+                            onclick="navigateTo('complaints')">
+                            <div class="text-3xl mb-2">💧</div>
+                            <div class="font-semibold">Water &amp; Sanitation</div>
+                            <div class="text-xs text-text-muted">156 complaints</div>
+                        </div>
+                        <div class="card p-6 text-center hover:border-primary cursor-pointer"
+                            onclick="navigateTo('complaints')">
+                            <div class="text-3xl mb-2">⚡</div>
+                            <div class="font-semibold">Electricity &amp; Power</div>
+                            <div class="text-xs text-text-muted">89 complaints</div>
+                        </div>
+                        <div class="card p-6 text-center hover:border-primary cursor-pointer"
+                            onclick="navigateTo('complaints')">
+                            <div class="text-3xl mb-2">🗑️</div>
+                            <div class="font-semibold">Waste Management</div>
+                            <div class="text-xs text-text-muted">112 complaints</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-custom py-16">
+                <div
+                    class="bg-gradient-to-r from-primary to-purple-600 rounded-2xl p-10 md:p-14 text-white text-center relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4">
+                    </div>
+                    <div class="relative z-10">
+                        <h2 class="text-3xl font-bold mb-3">Have an issue to report?</h2>
+                        <p class="text-white/80 max-w-lg mx-auto mb-6">Join thousands of citizens making their city
+                            better.</p>
+                        <button
+                            class="bg-white text-primary font-semibold px-8 py-3 rounded-full hover:shadow-xl transition hover:scale-105"
+                            onclick="openAuthModal()">Get Started <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── COMPLAINTS (browse) ─── -->
+        <section class="page-section" id="page-complaints">
+            <div class="container-custom py-8 md:py-12">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <aside class="md:w-72 flex-shrink-0">
+                        <div class="card p-6 sticky top-24">
+                            <h3 class="font-bold text-lg mb-4">Filters</h3>
+                            <div class="mb-4">
+                                <label class="form-label">Keyword</label>
+                                <input class="form-input" placeholder="Search complaints..." />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Category</label>
+                                <select class="form-input">
+                                    <option>All categories</option>
+                                    <option>Road &amp; Transport</option>
+                                    <option>Water &amp; Sanitation</option>
+                                    <option>Electricity &amp; Power</option>
+                                    <option>Waste Management</option>
+                                    <option>Public Safety</option>
+                                    <option>Parks &amp; Recreation</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Status</label>
+                                <select class="form-input">
+                                    <option>All statuses</option>
+                                    <option>Pending</option>
+                                    <option>Assigned</option>
+                                    <option>In Progress</option>
+                                    <option>Resolved</option>
+                                    <option>Closed</option>
+                                    <option>Rejected</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Priority</label>
+                                <select class="form-input">
+                                    <option>All priorities</option>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Date Range</label>
+                                <div class="flex gap-2">
+                                    <input class="form-input" type="date" />
+                                    <input class="form-input" type="date" />
+                                </div>
+                            </div>
+                            <button class="btn-primary btn-block">Apply Filters</button>
+                            <button class="btn-secondary btn-block mt-2 text-sm">Reset</button>
+                        </div>
+                    </aside>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                            <div>
+                                <h2 class="text-xl font-bold">All Complaints</h2>
+                                <p class="text-sm text-text-muted">Showing 12 of 1,234 results</p>
+                            </div>
+                            <select class="form-input w-auto">
+                                <option>Newest</option>
+                                <option>Oldest</option>
+                                <option>Most Upvoted</option>
+                                <option>Priority: High First</option>
+                                <option>Status: Pending First</option>
+                            </select>
+                        </div>
+                        <div class="space-y-4" id="complaintList">
+                            <!-- populated by JS -->
+                        </div>
+                        <div class="flex items-center justify-center gap-2 mt-10">
+                            <button
+                                class="px-4 py-2 rounded-lg border border-border text-sm hover:bg-surface-alt transition">←
+                                Prev</button>
+                            <button class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold">1</button>
+                            <button
+                                class="px-4 py-2 rounded-lg border border-border text-sm hover:bg-surface-alt transition">2</button>
+                            <button
+                                class="px-4 py-2 rounded-lg border border-border text-sm hover:bg-surface-alt transition">3</button>
+                            <button
+                                class="px-4 py-2 rounded-lg border border-border text-sm hover:bg-surface-alt transition">Next
+                                →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── COMPLAINT DETAIL ─── -->
+        <section class="page-section" id="page-complaint-detail">
+            <div class="container-custom py-8 md:py-12">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('complaints')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to complaints
+                </button>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="card p-6">
+                            <div class="flex items-start justify-between mb-4 flex-wrap gap-2">
+                                <div>
+                                    <div class="flex items-center gap-3 flex-wrap">
+                                        <h2 class="text-2xl font-bold">Pothole on Main Street</h2>
+                                        <span class="badge badge-pending">Pending</span>
+                                        <span class="badge badge-urgent">Urgent</span>
+                                    </div>
+                                    <p class="text-text-muted text-sm mt-1"><i class="fa-regular fa-location-dot"></i>
+                                        123 Main St, Downtown</p>
+                                </div>
+                                <span class="text-sm text-text-muted">ID: #C-2026-0042</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 text-sm mb-4">
+                                <span><i class="fa-regular fa-tag"></i> Road &amp; Transport</span>
+                                <span><i class="fa-regular fa-calendar"></i> Submitted: Sep 1, 2026</span>
+                                <span><i class="fa-regular fa-user"></i> John Citizen</span>
+                                <span><i class="fa-regular fa-building"></i> Dept: Road</span>
+                                <span class="priority-high"><i class="fa-regular fa-triangle-exclamation"></i> High
+                                    Priority</span>
+                            </div>
+                            <div class="bg-surface-alt rounded-xl p-4 mb-6">
+                                <p class="text-text-secondary text-sm leading-relaxed">
+                                    Large pothole on Main Street near the intersection with 5th Avenue. It's been here
+                                    for over 2 weeks and is causing damage to vehicles. The pothole is about 3 feet wide
+                                    and 6 inches deep. Please fix as soon as possible.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="text-xs bg-surface-alt px-3 py-1 rounded-full border border-border">📸
+                                    Photo attached</span>
+                                <span class="text-xs bg-surface-alt px-3 py-1 rounded-full border border-border">📍 GPS:
+                                    40.7128, -74.0060</span>
+                                <span class="text-xs bg-surface-alt px-3 py-1 rounded-full border border-border">👤
+                                    Assigned to: Sarah Davis</span>
+                            </div>
+                            <h4 class="font-bold text-lg mb-4">📋 Timeline</h4>
+                            <div class="timeline" id="detailTimeline">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <div class="card p-6 sticky top-24">
+                            <h3 class="font-bold text-lg mb-4">Actions</h3>
+                            <div class="space-y-3">
+                                <button class="btn-primary btn-block"
+                                    onclick="showToast('success','Complaint Assigned','Assigned to Road Department.')">
+                                    <i class="fa-regular fa-user-check"></i> Assign to Dept
+                                </button>
+                                <button class="btn-success btn-block"
+                                    onclick="showToast('success','Status Updated','Marked as In Progress.')">
+                                    <i class="fa-regular fa-play"></i> Start Work
+                                </button>
+                                <button class="btn-outline btn-block"
+                                    onclick="showToast('info','Note Added','Follow-up note recorded.')">
+                                    <i class="fa-regular fa-comment"></i> Add Note
+                                </button>
+                                <button class="btn-danger btn-block"
+                                    onclick="showToast('warning','Complaint Rejected','Reason: Duplicate report.')">
+                                    <i class="fa-regular fa-ban"></i> Reject
+                                </button>
+                                <button class="btn-secondary btn-block"
+                                    onclick="showToast('info','Escalated','Complaint escalated to supervisor.')">
+                                    <i class="fa-regular fa-arrow-up"></i> Escalate
+                                </button>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-border">
+                                <h4 class="font-semibold text-sm mb-2">Assigned To</h4>
+                                <div class="flex items-center gap-3 p-3 bg-surface-alt rounded-xl">
+                                    <div class="avatar avatar-primary-light">SD</div>
+                                    <div>
+                                        <div class="font-medium text-sm">Sarah Davis</div>
+                                        <div class="text-xs text-text-muted">Road Department</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 bg-blue-50 rounded-xl text-sm text-blue-800">
+                                <i class="fa-regular fa-shield-check mr-2"></i> All actions are logged for audit.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── LOGIN ─── -->
+        <section class="page-section" id="page-login">
+            <div class="container-custom py-12 max-w-md mx-auto">
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-2">Sign In</h2>
+                    <p class="text-text-muted text-sm mb-6">Welcome back to CityCare</p>
+                    <!-- Google Social Login (GCP) -->
+                    <button type="button" class="w-full flex items-center justify-center gap-3 py-2.5 px-4 mb-4 border border-border rounded-xl font-medium text-sm text-text bg-surface hover:bg-surface-alt transition shadow-sm hover:border-primary" onclick="handleGoogleAuth()">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continue with Google (GCP)</span>
+                    </button>
+                    <div class="flex items-center my-4">
+                        <div class="flex-grow border-t border-border"></div>
+                        <span class="flex-shrink mx-3 text-text-muted text-xs uppercase tracking-wider font-semibold">or email</span>
+                        <div class="flex-grow border-t border-border"></div>
+                    </div>
+                    <div class="mb-4"><label class="form-label">Email</label><input class="form-input" type="email"
+                            placeholder="you@city.com" /></div>
+                    <div class="mb-4"><label class="form-label">Password</label><input class="form-input"
+                            type="password" placeholder="••••••••" /></div>
+                    <button class="btn-primary btn-block" onclick="handleAuth('login')">Sign In</button>
+                    <p class="text-center text-sm mt-4">Don't have an account? <a href="#"
+                            class="text-primary font-semibold" onclick="navigateTo('register')">Sign up</a></p>
+                    <p class="text-center text-xs text-text-muted mt-2">Demo: any email · password: demo123</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── REGISTER ─── -->
+        <section class="page-section" id="page-register">
+            <div class="container-custom py-12 max-w-md mx-auto">
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-2">Create Account</h2>
+                    <p class="text-text-muted text-sm mb-6">Join CityCare today</p>
+                    <!-- Google Social Login (GCP) -->
+                    <button type="button" class="w-full flex items-center justify-center gap-3 py-2.5 px-4 mb-4 border border-border rounded-xl font-medium text-sm text-text bg-surface hover:bg-surface-alt transition shadow-sm hover:border-primary" onclick="handleGoogleAuth()">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Sign up with Google (GCP)</span>
+                    </button>
+                    <div class="flex items-center my-4">
+                        <div class="flex-grow border-t border-border"></div>
+                        <span class="flex-shrink mx-3 text-text-muted text-xs uppercase tracking-wider font-semibold">or email</span>
+                        <div class="flex-grow border-t border-border"></div>
+                    </div>
+                    <div class="mb-4"><label class="form-label">Full Name</label><input class="form-input" type="text"
+                            placeholder="John Doe" /></div>
+                    <div class="mb-4"><label class="form-label">Email</label><input class="form-input" type="email"
+                            placeholder="you@city.com" /></div>
+                    <div class="mb-4"><label class="form-label">Password</label><input class="form-input"
+                            type="password" placeholder="••••••••" /></div>
+                    <div class="mb-4"><label class="form-label">I am a</label><select class="form-input">
+                            <option value="citizen">Citizen</option>
+                            <option value="staff">Department Staff</option>
+                            <option value="admin">Administrator</option>
+                        </select></div>
+                    <button class="btn-primary btn-block" onclick="handleAuth('register')">Create Account</button>
+                    <p class="text-center text-sm mt-4">Already have an account? <a href="#"
+                            class="text-primary font-semibold" onclick="navigateTo('login')">Sign in</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── DASHBOARD ─── -->
+        <section class="page-section" id="page-dashboard">
+            <div class="container-custom py-8 md:py-12">
+
+                <!-- Demo Banner -->
+                <div class="demo-banner mb-6">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span><strong>Demo Mode</strong> — All data is simulated. Use the role switcher above to explore
+                        different views.</span>
+                </div>
+
+                <!-- Dashboard Header -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold" id="dashTitle">Citizen Dashboard</h2>
+                        <p class="text-text-secondary text-sm" id="dashSubtitle">Track your complaints and activity</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-surface-alt rounded-full p-1 border border-border">
+                        <button class="dash-tab active" data-dash="citizen"
+                            onclick="switchDashTab('citizen')">Citizen</button>
+                        <button class="dash-tab" data-dash="staff" onclick="switchDashTab('staff')">Staff</button>
+                        <button class="dash-tab" data-dash="admin" onclick="switchDashTab('admin')">Admin</button>
+                    </div>
+                </div>
+
+                <!-- ─── CITIZEN DASHBOARD ─── -->
+                <div id="dash-citizen">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-blue"><i class="fa-regular fa-file-lines"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">4</div>
+                                <div class="text-sm text-text-muted">Total</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-yellow"><i class="fa-regular fa-clock"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">2</div>
+                                <div class="text-sm text-text-muted">Pending</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-green"><i class="fa-regular fa-circle-check"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">1</div>
+                                <div class="text-sm text-text-muted">Resolved</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-orange"><i class="fa-regular fa-star"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">4.8</div>
+                                <div class="text-sm text-text-muted">Rating</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6 mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg">My Complaints</h3>
+                            <button class="btn-primary btn-sm" onclick="navigateTo('new-complaint')"><i
+                                    class="fa-regular fa-plus"></i> New</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="citizenComplaintTable">
+                                    <!-- populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card p-6">
+                            <h3 class="font-bold text-lg mb-4">Payment History</h3>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Complaint</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Pothole on Main St</td>
+                                            <td>$0.00</td>
+                                            <td>Sep 1, 2026</td>
+                                            <td><span class="badge badge-closed">N/A</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Water Leak near Park</td>
+                                            <td>$0.00</td>
+                                            <td>Sep 2, 2026</td>
+                                            <td><span class="badge badge-closed">N/A</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card p-6">
+                            <h3 class="font-bold text-lg mb-4">Recent Activity</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="avatar avatar-sm avatar-green">✓</div>
+                                    <div><span class="font-medium">Pothole</span> resolved <span
+                                            class="text-text-muted">2 days ago</span></div>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="avatar avatar-sm avatar-yellow">⏳</div>
+                                    <div><span class="font-medium">Water Leak</span> assigned <span
+                                            class="text-text-muted">1 day ago</span></div>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="avatar avatar-sm avatar-blue">📝</div>
+                                    <div><span class="font-medium">Streetlight</span> in progress <span
+                                            class="text-text-muted">3 hours ago</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── STAFF DASHBOARD ─── -->
+                <div id="dash-staff" style="display:none;">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-blue"><i class="fa-regular fa-list"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">8</div>
+                                <div class="text-sm text-text-muted">Assigned</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-yellow"><i class="fa-regular fa-clock"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">3</div>
+                                <div class="text-sm text-text-muted">In Progress</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-green"><i class="fa-regular fa-circle-check"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">4</div>
+                                <div class="text-sm text-text-muted">Resolved</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-orange"><i class="fa-regular fa-gauge-high"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">92%</div>
+                                <div class="text-sm text-text-muted">SLA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6 mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg">Assigned Complaints</h3>
+                            <span class="text-sm text-text-muted">Department: <strong>Road</strong></span>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Citizen</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="staffComplaintTable">
+                                    <!-- populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <h3 class="font-bold text-lg mb-4">SLA Dashboard</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-4 bg-surface-alt rounded-xl">
+                                <div class="text-2xl font-bold text-green-600">98%</div>
+                                <div class="text-xs text-text-muted">On-time</div>
+                            </div>
+                            <div class="text-center p-4 bg-surface-alt rounded-xl">
+                                <div class="text-2xl font-bold text-yellow-600">2</div>
+                                <div class="text-xs text-text-muted">At risk</div>
+                            </div>
+                            <div class="text-center p-4 bg-surface-alt rounded-xl">
+                                <div class="text-2xl font-bold text-red-600">0</div>
+                                <div class="text-xs text-text-muted">Breached</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── ADMIN DASHBOARD ─── -->
+                <div id="dash-admin" style="display:none;">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-blue"><i class="fa-regular fa-users"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">1,284</div>
+                                <div class="text-sm text-text-muted">Users</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-yellow"><i class="fa-regular fa-file-lines"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">234</div>
+                                <div class="text-sm text-text-muted">Complaints</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-green"><i class="fa-regular fa-circle-check"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">89</div>
+                                <div class="text-sm text-text-muted">Resolved</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-purple"><i class="fa-regular fa-clock-rotate-left"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold">42</div>
+                                <div class="text-sm text-text-muted">Audit Logs</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="card p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-lg">Recent Complaints</h3>
+                                <button class="text-sm text-primary hover:underline"
+                                    onclick="navigateTo('complaints')">View all</button>
+                            </div>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminRecentTable">
+                                        <!-- populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-lg">Department Overview</h3>
+                            </div>
+                            <div class="space-y-3" id="adminDeptOverview">
+                                <!-- populated by JS -->
+                            </div>
+                            <div class="mt-4 p-3 bg-primary/5 rounded-xl border border-primary/20">
+                                <div class="flex justify-between text-sm"><span>Overall Resolution Rate</span><span
+                                        class="font-bold text-primary">76%</span></div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-primary h-2 rounded-full" style="width:76%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── NEW COMPLAINT ─── -->
+        <section class="page-section" id="page-new-complaint">
+            <div class="container-custom py-8 md:py-12 max-w-2xl mx-auto">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-2">📝 Report a New Issue</h2>
+                    <p class="text-text-muted text-sm mb-6">Fill in the details below. Our team will review and assign
+                        it to the right department.</p>
+                    <form id="newComplaintForm" onsubmit="submitComplaint(event)">
+                        <div class="mb-4">
+                            <label class="form-label">Title <span class="text-red-500">*</span></label>
+                            <input class="form-input" type="text" id="compTitle"
+                                placeholder="e.g. Pothole on Main Street" required />
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="form-label">Category <span class="text-red-500">*</span></label>
+                                <select class="form-input" id="compCategory" required>
+                                    <option value="">Select...</option>
+                                    <option value="Road">Road &amp; Transport</option>
+                                    <option value="Water">Water &amp; Sanitation</option>
+                                    <option value="Electricity">Electricity &amp; Power</option>
+                                    <option value="Waste">Waste Management</option>
+                                    <option value="Public Safety">Public Safety</option>
+                                    <option value="Parks">Parks &amp; Recreation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">Priority <span class="text-red-500">*</span></label>
+                                <select class="form-input" id="compPriority" required>
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Location <span class="text-red-500">*</span></label>
+                            <input class="form-input" type="text" id="compLocation"
+                                placeholder="e.g. 123 Main St, Downtown" required />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Description <span class="text-red-500">*</span></label>
+                            <textarea class="form-input" id="compDescription" rows="4"
+                                placeholder="Describe the issue in detail..." required></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Attach Photo (optional)</label>
+                            <input class="form-input" type="file" accept="image/*" />
+                            <p class="text-xs text-text-muted mt-1">Supported: JPG, PNG, WEBP (max 5MB)</p>
+                        </div>
+                        <div class="flex gap-3 flex-wrap">
+                            <button type="submit" class="btn-primary"><i class="fa-regular fa-paper-plane"></i> Submit
+                                Complaint</button>
+                            <button type="button" class="btn-secondary"
+                                onclick="navigateTo('dashboard')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PAYMENT INITIATION ─── -->
+        <section class="page-section" id="page-payment-init">
+            <div class="container-custom py-12 max-w-2xl mx-auto">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-2">💳 Complete Payment</h2>
+                    <p class="text-text-muted text-sm mb-6">Secure payment for your service request</p>
+                    <div class="bg-surface-alt rounded-xl p-4 mb-6">
+                        <div class="flex justify-between text-sm"><span>Complaint</span><span
+                                class="font-medium">Pothole on Main Street</span></div>
+                        <div class="flex justify-between text-sm"><span>Service Fee</span><span
+                                class="font-bold text-primary text-lg">$25.00</span></div>
+                        <div class="flex justify-between text-sm"><span>Status</span><span
+                                class="badge badge-pending">Pending</span></div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="form-label">Payment Method</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="payment-card selected" onclick="selectPayment(this)">
+                                <i class="fa-brands fa-stripe text-2xl text-primary"></i>
+                                <div class="text-sm font-medium mt-1">Stripe</div>
+                            </div>
+                            <div class="payment-card" onclick="selectPayment(this)">
+                                <i class="fa-regular fa-credit-card text-2xl"></i>
+                                <div class="text-sm font-medium mt-1">SSLCommerz</div>
+                            </div>
+                            <div class="payment-card" onclick="selectPayment(this)">
+                                <i class="fa-brands fa-google-pay text-2xl"></i>
+                                <div class="text-sm font-medium mt-1">Google Pay</div>
+                            </div>
+                            <div class="payment-card" onclick="selectPayment(this)">
+                                <i class="fa-brands fa-apple-pay text-2xl"></i>
+                                <div class="text-sm font-medium mt-1">Apple Pay</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-block" onclick="simulatePayment()"><i class="fa-regular fa-lock"></i>
+                        Pay $25.00</button>
+                    <p class="text-center text-xs text-text-muted mt-4">🔒 Secured · Test mode</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PAYMENT SUCCESS ─── -->
+        <section class="page-section" id="page-payment-success">
+            <div class="container-custom py-20 max-w-md mx-auto text-center">
+                <div class="card p-10">
+                    <div
+                        class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 text-5xl">
+                        ✅</div>
+                    <h2 class="text-3xl font-bold text-green-600">Payment Successful!</h2>
+                    <p class="text-text-muted mt-2">Your payment has been confirmed. The complaint will be processed
+                        shortly.</p>
+                    <div class="flex gap-3 justify-center mt-6 flex-wrap">
+                        <button class="btn-primary" onclick="navigateTo('dashboard')">Go to Dashboard</button>
+                        <button class="btn-secondary" onclick="navigateTo('home')">Home</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PAYMENT CANCEL ─── -->
+        <section class="page-section" id="page-payment-cancel">
+            <div class="container-custom py-20 max-w-md mx-auto text-center">
+                <div class="card p-10">
+                    <div
+                        class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4 text-5xl">
+                        ❌</div>
+                    <h2 class="text-3xl font-bold text-red-500">Payment Canceled</h2>
+                    <p class="text-text-muted mt-2">Your payment was not completed. You can try again or contact
+                        support.</p>
+                    <div class="flex gap-3 justify-center mt-6 flex-wrap">
+                        <button class="btn-primary" onclick="navigateTo('payment-init')">Try Again</button>
+                        <button class="btn-secondary" onclick="navigateTo('home')">Home</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ADMIN: AUDIT LOGS ─── -->
+        <section class="page-section" id="page-admin-audit">
+            <div class="container-custom py-8 md:py-12">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">📋 Audit Logs</h3>
+                        <span class="text-sm text-text-muted">Tracking all system changes</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Target</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditLogTable">
+                                <!-- populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FEEDBACK ─── -->
+        <section class="page-section" id="page-feedback">
+            <div class="container-custom py-12 max-w-2xl mx-auto">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-2">⭐ Feedback &amp; Reviews</h2>
+                    <p class="text-text-muted text-sm mb-6">Share your experience with CityCare</p>
+                    <div class="space-y-6">
+                        <div class="bg-surface-alt rounded-xl p-4">
+                            <div class="flex items-center gap-4">
+                                <div class="avatar avatar-primary-light">JD</div>
+                                <div>
+                                    <div class="font-medium">John Doe</div>
+                                    <div class="flex gap-1 text-yellow-400 text-sm">★★★★★</div>
+                                </div>
+                                <span class="text-xs text-text-muted ml-auto">2 days ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mt-2">"CityCare helped me report a pothole that was
+                                fixed in just 3 days. Amazing service!"</p>
+                        </div>
+                        <div class="bg-surface-alt rounded-xl p-4">
+                            <div class="flex items-center gap-4">
+                                <div class="avatar avatar-green">JS</div>
+                                <div>
+                                    <div class="font-medium">Jane Smith</div>
+                                    <div class="flex gap-1 text-yellow-400 text-sm">★★★★☆</div>
+                                </div>
+                                <span class="text-xs text-text-muted ml-auto">5 days ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mt-2">"Great platform, but response time could be
+                                faster for urgent issues."</p>
+                        </div>
+                        <div class="bg-surface-alt rounded-xl p-4">
+                            <div class="flex items-center gap-4">
+                                <div class="avatar avatar-purple">RW</div>
+                                <div>
+                                    <div class="font-medium">Robert Wilson</div>
+                                    <div class="flex gap-1 text-yellow-400 text-sm">★★★★★</div>
+                                </div>
+                                <span class="text-xs text-text-muted ml-auto">1 week ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mt-2">"The real-time tracking feature is excellent. I
+                                always know the status of my complaint."</p>
+                        </div>
+                        <div class="border-t border-border pt-6">
+                            <h4 class="font-bold mb-4">Leave a Review</h4>
+                            <div class="flex gap-1 text-2xl mb-4">
+                                <span class="cursor-pointer hover:text-yellow-400 transition">☆</span>
+                                <span class="cursor-pointer hover:text-yellow-400 transition">☆</span>
+                                <span class="cursor-pointer hover:text-yellow-400 transition">☆</span>
+                                <span class="cursor-pointer hover:text-yellow-400 transition">☆</span>
+                                <span class="cursor-pointer hover:text-yellow-400 transition">☆</span>
+                            </div>
+                            <textarea class="form-input" rows="3" placeholder="Write your feedback..."></textarea>
+                            <button class="btn-primary mt-4"
+                                onclick="showToast('success','Feedback Submitted','Thank you for your review!')">Submit
+                                Feedback</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ANALYTICS (full page) ─── -->
+        <section class="page-section" id="page-analytics">
+            <div class="container-custom py-8 md:py-12">
+                <button class="text-text-muted hover:text-text transition mb-6 flex items-center gap-2 text-sm"
+                    onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="card p-6">
+                    <h2 class="text-2xl font-bold mb-6">📊 Analytics Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-blue"><i class="fa-regular fa-file-lines"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">234</div>
+                                <div class="text-sm text-text-muted">Total Complaints</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-green"><i class="fa-regular fa-circle-check"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">76%</div>
+                                <div class="text-sm text-text-muted">Resolution Rate</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center gap-4">
+                            <div class="stat-icon stat-icon-orange"><i class="fa-regular fa-clock"></i></div>
+                            <div>
+                                <div class="text-2xl font-bold">2.4d</div>
+                                <div class="text-sm text-text-muted">Avg Resolution Time</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg mb-4">Complaints by Category</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Road &amp; Transport</div>
+                                <div class="text-2xl font-bold text-primary">34%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-primary h-2 rounded-full" style="width:34%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Water &amp; Sanitation</div>
+                                <div class="text-2xl font-bold text-blue-600">28%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width:28%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Electricity &amp; Power</div>
+                                <div class="text-2xl font-bold text-yellow-600">19%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-yellow-600 h-2 rounded-full" style="width:19%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Waste Management</div>
+                                <div class="text-2xl font-bold text-green-600">22%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width:22%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Public Safety</div>
+                                <div class="text-2xl font-bold text-red-600">15%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width:15%"></div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-alt rounded-xl">
+                                <div class="font-bold">Parks &amp; Recreation</div>
+                                <div class="text-2xl font-bold text-purple-600">11%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width:11%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-4">Monthly Trends</h3>
+                        <div class="flex items-end gap-2 h-40">
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/20 rounded-t-lg" style="height:60%"></div><span
+                                    class="text-xs mt-1">Jan</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/30 rounded-t-lg" style="height:70%"></div><span
+                                    class="text-xs mt-1">Feb</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/40 rounded-t-lg" style="height:80%"></div><span
+                                    class="text-xs mt-1">Mar</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/50 rounded-t-lg" style="height:65%"></div><span
+                                    class="text-xs mt-1">Apr</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/60 rounded-t-lg" style="height:90%"></div><span
+                                    class="text-xs mt-1">May</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/70 rounded-t-lg" style="height:75%"></div><span
+                                    class="text-xs mt-1">Jun</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary/80 rounded-t-lg" style="height:85%"></div><span
+                                    class="text-xs mt-1">Jul</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="w-full bg-primary rounded-t-lg" style="height:95%"></div><span
+                                    class="text-xs mt-1">Aug</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="bg-white border-t border-border mt-12">
+        <div class="container-custom py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2 text-lg font-bold">
+                    <span class="text-gradient">CityCare</span>
+                    <span class="text-xs text-text-muted">© 2026</span>
+                </div>
+                <div class="flex gap-6 text-sm text-text-secondary">
+                    <a href="#" class="hover:text-primary transition">About</a>
+                    <a href="#" class="hover:text-primary transition">Privacy</a>
+                    <a href="#" class="hover:text-primary transition">Terms</a>
+                    <a href="#" class="hover:text-primary transition">Contact</a>
+                </div>
+                <div class="flex gap-3 text-text-muted">
+                    <a href="#" class="hover:text-primary transition"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="hover:text-primary transition"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="hover:text-primary transition"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- ═══ JAVASCRIPT ═══ -->
+    <script>
+        // ── Data ──
+        const complaintsData = [{
+            id: 1,
+            title: 'Pothole on Main Street',
+            category: 'Road',
+            location: '123 Main St, Downtown',
+            description: 'Large pothole causing traffic issues and vehicle damage.',
+            status: 'pending',
+            priority: 'high',
+            createdAt: '2026-09-01',
+            citizen: 'John Citizen',
+            department: 'Road',
+            assignedTo: null,
+            timeline: [
+                { time: '2026-09-01 10:30', content: 'Complaint submitted', desc: 'Awaiting review.' }
+            ]
+        }, {
+            id: 2,
+            title: 'Water Leak near Riverside Park',
+            category: 'Water',
+            location: '456 Oak Ave, Riverside',
+            description: 'Water pipe burst, flooding sidewalk and nearby area.',
+            status: 'assigned',
+            priority: 'urgent',
+            createdAt: '2026-09-02',
+            citizen: 'Jane Smith',
+            department: 'Water',
+            assignedTo: 'Sarah Davis',
+            timeline: [
+                { time: '2026-09-02 08:15', content: 'Complaint submitted', desc: 'Awaiting review.' },
+                { time: '2026-09-02 14:20', content: 'Assigned to Water Department', desc: 'Staff Sarah assigned.' }
+            ]
+        }, {
+            id: 3,
+            title: 'Streetlight Outage on Elm St',
+            category: 'Electricity',
+            location: '789 Elm St, Uptown',
+            description: 'Multiple streetlights not working, creating safety hazard.',
+            status: 'in-progress',
+            priority: 'medium',
+            createdAt: '2026-08-30',
+            citizen: 'Bob Johnson',
+            department: 'Electricity',
+            assignedTo: 'Mike Chen',
+            timeline: [
+                { time: '2026-08-30 09:00', content: 'Complaint submitted', desc: 'Awaiting review.' },
+                { time: '2026-08-31 11:30', content: 'Assigned to Electricity Dept', desc: 'Staff Mike assigned.' },
+                { time: '2026-09-01 16:45', content: 'Work in progress', desc: 'Technician dispatched.' }
+            ]
+        }, {
+            id: 4,
+            title: 'Illegal Dumping on Pine St',
+            category: 'Waste',
+            location: '101 Pine St, Westside',
+            description: 'Construction debris dumped on vacant lot.',
+            status: 'resolved',
+            priority: 'medium',
+            createdAt: '2026-08-28',
+            citizen: 'Alice Brown',
+            department: 'Waste',
+            assignedTo: 'Tom Wilson',
+            timeline: [
+                { time: '2026-08-28 07:30', content: 'Complaint submitted', desc: 'Awaiting review.' },
+                { time: '2026-08-28 13:00', content: 'Assigned to Waste Dept', desc: 'Staff Tom assigned.' },
+                { time: '2026-08-29 09:15', content: 'Resolved', desc: 'Debris cleared by sanitation crew.' }
+            ]
+        }, {
+            id: 5,
+            title: 'Broken Park Bench',
+            category: 'Parks',
+            location: '202 Maple Dr, Parkside',
+            description: 'Park bench near playground is broken and unsafe.',
+            status: 'closed',
+            priority: 'low',
+            createdAt: '2026-08-25',
+            citizen: 'Carol White',
+            department: 'Parks',
+            assignedTo: null,
+            timeline: [
+                { time: '2026-08-25 12:00', content: 'Complaint submitted', desc: 'Awaiting review.' },
+                { time: '2026-08-26 08:30', content: 'Closed', desc: 'Duplicate report — already in system.' }
+            ]
+        }, {
+            id: 6,
+            title: 'Fallen Tree on 5th Avenue',
+            category: 'Public Safety',
+            location: '5th Ave & Main St, Downtown',
+            description: 'Large tree branch fell, blocking one lane of traffic.',
+            status: 'assigned',
+            priority: 'high',
+            createdAt: '2026-09-03',
+            citizen: 'David Lee',
+            department: 'Public Safety',
+            assignedTo: 'Maria Garcia',
+            timeline: [
+                { time: '2026-09-03 06:45', content: 'Complaint submitted', desc: 'Awaiting review.' },
+                { time: '2026-09-03 08:30', content: 'Assigned to Public Safety', desc: 'Staff Maria assigned.' }
+            ]
+        }];
+
+        const auditLogs = [
+            { user: 'Admin User', action: 'Updated user role', target: 'john@city.com', time: '2026-09-02 09:30' },
+            { user: 'Sarah Davis', action: 'Changed complaint status', target: 'Streetlight Outage', time: '2026-09-01 16:45' },
+            { user: 'Admin User', action: 'Added department', target: 'Parks & Recreation', time: '2026-08-31 11:00' },
+            { user: 'Admin User', action: 'Assigned complaint', target: 'Water Leak', time: '2026-09-02 14:20' },
+            { user: 'Tom Wilson', action: 'Resolved complaint', target: 'Illegal Dumping', time: '2026-08-29 09:15' },
+            { user: 'Admin User', action: 'Closed complaint', target: 'Broken Park Bench', time: '2026-08-26 08:30' },
+        ];
+
+        const deptStats = [
+            { name: 'Road & Transport', count: 34 },
+            { name: 'Water & Sanitation', count: 28 },
+            { name: 'Electricity & Power', count: 19 },
+            { name: 'Waste Management', count: 22 },
+            { name: 'Public Safety', count: 15 },
+            { name: 'Parks & Recreation', count: 11 },
+        ];
+
+        // ── State ──
+        let currentRole = 'citizen';
+        let currentPage = 'home';
+        let currentDashTab = 'citizen';
+        let isLoggedIn = false;
+        let complaintIdCounter = 7;
+
+        // ── DOM helpers ──
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => document.querySelectorAll(s);
+
+        // ── Navigation ──
+        function navigateTo(page) {
+            currentPage = page;
+            $$('.page-section').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('pagesMenu').classList.remove('open');
+
+            if (page === 'dashboard') {
+                switchDashTab(currentDashTab);
+            }
+        }
+
+        // ── Role Switching ──
+        function switchRole(role) {
+            currentRole = role;
+            $$('.role-btn').forEach(el => el.classList.toggle('active', el.dataset.role === role));
+            if (currentPage === 'dashboard') {
+                switchDashTab(role);
+            }
+            updateDashTitle(role);
+            showToast('info', `Switched to ${role.charAt(0).toUpperCase() + role.slice(1)} view`, 'UI adapts to this role.');
+        }
+
+        function updateDashTitle(role) {
+            const titles = {
+                citizen: ['Citizen Dashboard', 'Track your complaints and activity'],
+                staff: ['Staff Dashboard', 'Manage assigned complaints'],
+                admin: ['Admin Dashboard', 'Oversee the entire platform']
+            };
+            const t = titles[role] || titles.citizen;
+            document.getElementById('dashTitle').textContent = t[0];
+            document.getElementById('dashSubtitle').textContent = t[1];
+        }
+
+        // ── Dashboard Tabs ──
+        function switchDashTab(tab) {
+            currentDashTab = tab;
+            $$('.dash-tab').forEach(el => el.classList.toggle('active', el.dataset.dash === tab));
+            document.getElementById('dash-citizen').style.display = tab === 'citizen' ? 'block' : 'none';
+            document.getElementById('dash-staff').style.display = tab === 'staff' ? 'block' : 'none';
+            document.getElementById('dash-admin').style.display = tab === 'admin' ? 'block' : 'none';
+            updateDashTitle(tab);
+
+            if (tab === 'citizen') renderCitizenDashboard();
+            else if (tab === 'staff') renderStaffDashboard();
+            else if (tab === 'admin') renderAdminDashboard();
+        }
+
+        // ── Render: Home Complaints ──
+        function renderHomeComplaints() {
+            const grid = document.getElementById('homeComplaintGrid');
+            const recent = complaintsData.slice(0, 3);
+            grid.innerHTML = recent.map(c => `
+                    <div class="card p-5 cursor-pointer" onclick="navigateTo('complaint-detail')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-bold text-base leading-tight">${c.title}</h4>
+                            <span class="badge badge-${c.status}">${c.status}</span>
+                        </div>
+                        <p class="text-sm text-text-muted"><i class="fa-regular fa-location-dot"></i> ${c.location}</p>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-text-muted">
+                            <span><i class="fa-regular fa-tag"></i> ${c.category}</span>
+                            <span><i class="fa-regular fa-calendar"></i> ${c.createdAt}</span>
+                            <span class="priority-${c.priority}"><i class="fa-regular fa-flag"></i> ${c.priority}</span>
+                        </div>
+                        <div class="mt-3 flex items-center gap-2">
+                            <div class="avatar avatar-sm avatar-primary-light">${c.citizen.charAt(0)}</div>
+                            <span class="text-xs text-text-secondary">${c.citizen}</span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // ── Render: Complaints List ──
+        function renderComplaintList() {
+            const container = document.getElementById('complaintList');
+            container.innerHTML = complaintsData.map(c => `
+                    <div class="card p-5 cursor-pointer hover:shadow-md transition" onclick="navigateTo('complaint-detail')">
+                        <div class="flex items-start justify-between flex-wrap gap-2">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap">
+                                    <h4 class="font-bold text-base">${c.title}</h4>
+                                    <span class="badge badge-${c.status}">${c.status}</span>
+                                    <span class="badge ${c.priority === 'urgent' || c.priority === 'high' ? 'badge-urgent' : 'badge-review'}">${c.priority}</span>
+                                </div>
+                                <p class="text-sm text-text-muted mt-1"><i class="fa-regular fa-location-dot"></i> ${c.location}</p>
+                                <div class="flex items-center gap-4 mt-2 text-xs text-text-muted flex-wrap">
+                                    <span><i class="fa-regular fa-tag"></i> ${c.category}</span>
+                                    <span><i class="fa-regular fa-calendar"></i> ${c.createdAt}</span>
+                                    <span><i class="fa-regular fa-user"></i> ${c.citizen}</span>
+                                    ${c.assignedTo ? `<span><i class="fa-regular fa-user-check"></i> ${c.assignedTo}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-text-muted">#${c.id}</span>
+                                <i class="fa-solid fa-chevron-right text-text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // ── Render: Citizen Dashboard ──
+        function renderCitizenDashboard() {
+            const table = document.getElementById('citizenComplaintTable');
+            const myComplaints = complaintsData.slice(0, 4);
+            table.innerHTML = myComplaints.map(c => `
+                    <tr>
+                        <td><span class="font-medium">${c.title}</span></td>
+                        <td>${c.category}</td>
+                        <td><span class="badge badge-${c.status}">${c.status}</span></td>
+                        <td><span class="priority-${c.priority}">${c.priority}</span></td>
+                        <td>${c.createdAt}</td>
+                        <td><button class="btn-primary btn-xs" onclick="navigateTo('complaint-detail')">View</button></td>
+                    </tr>
+                `).join('');
+        }
+
+        // ── Render: Staff Dashboard ──
+        function renderStaffDashboard() {
+            const table = document.getElementById('staffComplaintTable');
+            const assigned = complaintsData.filter(c => c.status === 'assigned' || c.status === 'in-progress');
+            table.innerHTML = assigned.map(c => `
+                    <tr>
+                        <td><span class="font-medium">${c.title}</span></td>
+                        <td>${c.citizen}</td>
+                        <td><span class="badge badge-${c.status}">${c.status}</span></td>
+                        <td><span class="priority-${c.priority}">${c.priority}</span></td>
+                        <td>${c.createdAt}</td>
+                        <td><button class="btn-primary btn-xs" onclick="navigateTo('complaint-detail')">Manage</button></td>
+                    </tr>
+                `).join('');
+        }
+
+        // ── Render: Admin Dashboard ──
+        function renderAdminDashboard() {
+            const table = document.getElementById('adminRecentTable');
+            const recent = complaintsData.slice(0, 4);
+            table.innerHTML = recent.map(c => `
+                    <tr>
+                        <td>${c.title}</td>
+                        <td><span class="badge badge-${c.status}">${c.status}</span></td>
+                        <td><span class="priority-${c.priority}">${c.priority}</span></td>
+                        <td>${c.createdAt}</td>
+                    </tr>
+                `).join('');
+
+            const deptDiv = document.getElementById('adminDeptOverview');
+            deptDiv.innerHTML = deptStats.map(d => `
+                    <div class="flex items-center justify-between p-3 bg-surface-alt rounded-xl">
+                        <span class="font-medium text-sm">${d.name}</span>
+                        <span class="text-sm font-bold text-primary">${d.count} complaints</span>
+                    </div>
+                `).join('');
+        }
+
+        // ── Render: Audit Logs ──
+        function renderAuditLogs() {
+            const table = document.getElementById('auditLogTable');
+            table.innerHTML = auditLogs.map(a => `
+                    <tr>
+                        <td><span class="font-medium">${a.user}</span></td>
+                        <td>${a.action}</td>
+                        <td>${a.target}</td>
+                        <td>${a.time}</td>
+                    </tr>
+                `).join('');
+        }
+
+        // ── Render: Complaint Detail Timeline ──
+        function renderDetailTimeline() {
+            const container = document.getElementById('detailTimeline');
+            const c = complaintsData[0];
+            container.innerHTML = c.timeline.map((t, i) => `
+                    <div class="timeline-item ${i === c.timeline.length - 1 ? 'active' : ''}">
+                        <div class="time">${t.time}</div>
+                        <div class="content">${t.content}</div>
+                        <div class="desc">${t.desc}</div>
+                    </div>
+                `).join('');
+        }
+
+        // ── Render: Home Analytics ──
+        function renderHomeAnalytics() {
+            // Stats
+            const statsContainer = document.getElementById('homeAnalyticsStats');
+            const total = complaintsData.length;
+            const resolved = complaintsData.filter(c => c.status === 'resolved' || c.status === 'closed').length;
+            const pending = complaintsData.filter(c => c.status === 'pending' || c.status === 'assigned').length;
+            const urgent = complaintsData.filter(c => c.priority === 'urgent' || c.priority === 'high').length;
+            const resolutionRate = total > 0 ? Math.round((resolved / total) * 100) : 0;
+
+            statsContainer.innerHTML = `
+                    <div class="stat-card"><div class="stat-number">${total}</div><div class="stat-label">Total Complaints</div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 12%</div></div>
+                    <div class="stat-card"><div class="stat-number">${resolved}</div><div class="stat-label">Resolved</div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 8%</div></div>
+                    <div class="stat-card"><div class="stat-number">${pending}</div><div class="stat-label">In Progress</div><div class="stat-change down"><i class="fa-solid fa-arrow-down"></i> 3%</div></div>
+                    <div class="stat-card"><div class="stat-number">${resolutionRate}%</div><div class="stat-label">Resolution Rate</div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 5%</div></div>
+                    <div class="stat-card"><div class="stat-number">${urgent}</div><div class="stat-label">Urgent/High</div><div class="stat-change down"><i class="fa-solid fa-arrow-down"></i> 2%</div></div>
+                `;
+
+            // Category bars
+            const barsContainer = document.getElementById('homeCategoryBars');
+            const categories = ['Road', 'Water', 'Electricity', 'Waste', 'Public Safety', 'Parks'];
+            const colors = ['#7b2cbf', '#9d4edd', '#d97706', '#10b981', '#8b5cf6', '#ec4899'];
+            const counts = categories.map(cat => complaintsData.filter(c => c.category === cat).length);
+            const maxCount = Math.max(...counts, 1);
+
+            barsContainer.innerHTML = categories.map((cat, i) => {
+                const pct = Math.round((counts[i] / maxCount) * 100);
+                return `
+                        <div class="category-bar">
+                            <span class="bar-label">${cat}</span>
+                            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${colors[i]};"></div></div>
+                            <span class="bar-value">${counts[i]}</span>
+                        </div>
+                    `;
+            }).join('');
+
+            document.getElementById('homeTotalComplaints').textContent = total;
+        }
+
+        // ── Submit Complaint ──
+        function submitComplaint(e) {
+            e.preventDefault();
+            const title = document.getElementById('compTitle').value.trim();
+            const category = document.getElementById('compCategory').value;
+            const location = document.getElementById('compLocation').value.trim();
+            const description = document.getElementById('compDescription').value.trim();
+            const priority = document.getElementById('compPriority').value;
+
+            if (!title || !category || !location || !description) {
+                showToast('error', 'Missing Fields', 'Please fill in all required fields.');
+                return;
+            }
+
+            const newComplaint = {
+                id: complaintIdCounter++,
+                title,
+                category,
+                location,
+                description,
+                status: 'pending',
+                priority,
+                createdAt: new Date().toISOString().slice(0, 10),
+                citizen: 'You',
+                department: category === 'Road' ? 'Road' :
+                    category === 'Water' ? 'Water' :
+                        category === 'Electricity' ? 'Electricity' :
+                            category === 'Waste' ? 'Waste' :
+                                category === 'Public Safety' ? 'Public Safety' :
+                                    category === 'Parks' ? 'Parks' : 'Other',
+                assignedTo: null,
+                timeline: [
+                    { time: new Date().toLocaleString(), content: 'Complaint submitted', desc: 'Awaiting review.' }
+                ]
+            };
+
+            complaintsData.unshift(newComplaint);
+            auditLogs.unshift({
+                user: 'You',
+                action: 'Submitted complaint',
+                target: title,
+                time: new Date().toLocaleString()
+            });
+
+            showToast('success', 'Complaint Submitted! 🎉', 'Your complaint has been recorded. Track it in your dashboard.');
+            document.getElementById('newComplaintForm').reset();
+            // Re-render home analytics after submission
+            renderHomeAnalytics();
+            setTimeout(() => navigateTo('dashboard'), 1200);
+        }
+
+        // ── Payment ──
+        function selectPayment(el) {
+            document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function simulatePayment() {
+            showToast('success', 'Payment Successful! 🎉', 'Your payment has been confirmed.');
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[10001] flex items-center justify-center p-4';
+            overlay.innerHTML = `
+                    <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center shadow-2xl animate-[modalIn_0.3s_cubic-bezier(0.22,1,0.36,1)]">
+                        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 text-5xl">✅</div>
+                        <h3 class="text-2xl font-bold text-green-600">Payment Confirmed!</h3>
+                        <p class="text-text-muted mt-2">Your service request will be processed shortly.</p>
+                        <button class="btn-primary mt-6" onclick="this.closest('.fixed').remove(); navigateTo('dashboard')">Go to Dashboard</button>
+                    </div>
+                `;
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay?.remove(), 6000);
+        }
+
+        // ── Auth ──
+        function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
+
+        function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+
+        function switchAuthTab(tab) {
+            const login = document.getElementById('authLoginForm');
+            const register = document.getElementById('authRegisterForm');
+            const tabLogin = document.getElementById('authTabLogin');
+            const tabReg = document.getElementById('authTabRegister');
+            if (tab === 'login') {
+                login.style.display = 'block';
+                register.style.display = 'none';
+                tabLogin.className = 'flex-1 py-2 rounded-lg font-medium text-sm bg-white shadow-sm';
+                tabReg.className = 'flex-1 py-2 rounded-lg font-medium text-sm text-text-muted';
+                document.getElementById('authModalTitle').textContent = 'Sign In';
+            } else {
+                login.style.display = 'none';
+                register.style.display = 'block';
+                tabReg.className = 'flex-1 py-2 rounded-lg font-medium text-sm bg-white shadow-sm';
+                tabLogin.className = 'flex-1 py-2 rounded-lg font-medium text-sm text-text-muted';
+                document.getElementById('authModalTitle').textContent = 'Create Account';
+            }
+        }
+
+        function handleAuth(mode) {
+            isLoggedIn = true;
+            closeAuthModal();
+            showToast('success', 'Welcome to CityCare!', `You are signed in as a ${currentRole}.`);
+            const btn = document.getElementById('navAuthBtn');
+            if (btn) {
+                btn.innerHTML = `<i class="fa-regular fa-user"></i> ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}`;
+                btn.onclick = () => showToast('info', 'Logged In', `You are signed in as ${currentRole}.`);
+            }
+            if (currentPage === 'dashboard') switchDashTab(currentDashTab);
+        }
+
+        // ── Google Auth (GCP Social Login) ──
+        function handleGoogleAuth() {
+            isLoggedIn = true;
+            closeAuthModal();
+            showToast('success', 'Google Auth Connected! 🚀', `Authenticated via GCP Social Login as ${currentRole.toUpperCase()}.`);
+            const btn = document.getElementById('navAuthBtn');
+            if (btn) {
+                btn.innerHTML = `<i class="fa-brands fa-google text-primary"></i> ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}`;
+                btn.onclick = () => showToast('info', 'Google Session Active', `Authenticated via Google OAuth (${currentRole}).`);
+            }
+            if (currentPage === 'dashboard') switchDashTab(currentDashTab);
+        }
+
+        // ── Toast ──
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const icons = {
+                success: 'fa-regular fa-circle-check',
+                error: 'fa-regular fa-circle-xmark',
+                warning: 'fa-regular fa-triangle-exclamation',
+                info: 'fa-regular fa-circle-info'
+            };
+            const colors = {
+                success: 'toast-success',
+                error: 'toast-error',
+                warning: 'toast-warning',
+                info: 'toast-info'
+            };
+            const toast = document.createElement('div');
+            toast.className = `toast ${colors[type] || ''}`;
+            toast.innerHTML = `
+                    <span class="toast-icon ${icons[type] || icons.info}"></span>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="this.closest('.toast').remove()">&times;</button>
+                `;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+        }
+
+        // ── Dropdown ──
+        function toggleDropdown() {
+            document.getElementById('pagesMenu').classList.toggle('open');
+        }
+
+        // ── Close dropdown on outside click ──
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('pagesDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                document.getElementById('pagesMenu').classList.remove('open');
+            }
+        });
+
+        // ── Close modal on overlay click ──
+        document.getElementById('authModal')?.addEventListener('click', function (e) {
+            if (e.target === this) closeAuthModal();
+        });
+
+        // ── Keyboard shortcuts ──
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.getElementById('authModal')?.classList.remove('active');
+                document.getElementById('pagesMenu').classList.remove('open');
+                document.querySelector('#paymentOverlay')?.remove();
+            }
+        });
+
+        // ── Init ──
+        renderHomeComplaints();
+        renderComplaintList();
+        renderCitizenDashboard();
+        renderStaffDashboard();
+        renderAdminDashboard();
+        renderAuditLogs();
+        renderDetailTimeline();
+        renderHomeAnalytics();
+
+        // Show welcome toast
+        setTimeout(() => {
+            showToast('info', '🏙️ Welcome to CityCare Pro', 'Explore all features using the navigation menu.');
+        }, 600);
+
+        // ── Expose globals ──
+        window.navigateTo = navigateTo;
+        window.switchRole = switchRole;
+        window.switchDashTab = switchDashTab;
+        window.openAuthModal = openAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.switchAuthTab = switchAuthTab;
+        window.handleAuth = handleAuth;
+        window.handleGoogleAuth = handleGoogleAuth;
+        window.showToast = showToast;
+        window.submitComplaint = submitComplaint;
+        window.selectPayment = selectPayment;
+        window.simulatePayment = simulatePayment;
+        window.toggleDropdown = toggleDropdown;
+        window.renderHomeAnalytics = renderHomeAnalytics;
+
+        // console.log('🏙️ CityCare Pro Platform UI loaded.');
+        // console.log('📋 Demo roles: Citizen | Staff | Admin');
+        // console.log('💡 Use the role switcher in the navigation to explore different views.');
+        // console.log('📊 Home Analytics section added with key metrics and category breakdown.');
+    </script>
+
+</body>
+
+</html>
