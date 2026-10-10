@@ -14,12 +14,14 @@ import { authenticate, requireRoles } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-// All admin routes require Authentication and ADMIN role
-router.use(authenticate, requireRoles('ADMIN'));
-
-// ── Analytics & Stats ──
+// ── Public Analytics & City Transparency Stats ──
 router.get('/dashboard-stats', getStats);
 router.get('/category-analytics', getCategoryAnalytics);
+
+// All protected admin management routes require Authentication and ADMIN role
+router.use(authenticate, requireRoles('ADMIN'));
+
+// ── Audit Logs ──
 router.get('/audit-logs', getAuditLogs);
 
 // ── User Management & Soft Deletion ──

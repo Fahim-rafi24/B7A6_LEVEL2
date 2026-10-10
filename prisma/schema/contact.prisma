@@ -1,0 +1,35 @@
+model Contact {
+    id                  String    @id @default(uuid())
+    name                String
+    email               String
+    phone               String?
+    subject             String
+    message             String
+    status              String    @default("UNCHECKED") // "UNCHECKED", "CHECKED"
+    checkedByAdminId    String?
+    checkedByAdminName  String?
+    checkedByAdminEmail String?
+    checkedAt           DateTime?
+    isReplied           Boolean   @default(false)
+    replyMessage        String?
+    repliedAt           DateTime?
+    createdAt           DateTime  @default(now())
+    updatedAt           DateTime  @updatedAt
+
+    @@map("contacts")
+}
+
+model ContactDel {
+    id                String   @id @default(uuid())
+    originalContactId String
+    name              String
+    email             String
+    subject           String
+    message           String
+    dataSnapshot      Json
+    deletedBy         String?
+    deletedAt         DateTime @default(now())
+    deletionReason    String?
+
+    @@map("contacts_del")
+}

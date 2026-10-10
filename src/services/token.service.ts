@@ -1,7 +1,7 @@
 import { env } from '../config/env';
 import { JwtAccessPayload, JwtRefreshPayload } from '../types/jwt-payload';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt.util';
-import { generateTokenId, hashToken, storeRefreshToken, compareToken, findRefreshTokenById, revokeRefreshToken } from './auth.service';
+import { generateTokenId, hashToken, storeRefreshToken, compareToken, findRefreshTokenById, revokeRefreshToken, findUserById } from './auth.service';
 
 export async function issueTokenPair(userId: string, role: string) {
     const jti = generateTokenId();
@@ -32,6 +32,8 @@ export async function rotateRefreshToken(oldRefreshToken: string) {
     }
 
     await revokeRefreshToken(stored.id);
-    return issueTokenPair(payload.sub, 'user');
+    const user = await findUserById(payload.sub);
+    const role = user?.role || 'CITIZEN';
+    return issueTokenPair(payload.sub, role);
 }
 

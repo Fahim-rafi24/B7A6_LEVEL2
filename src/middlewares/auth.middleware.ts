@@ -78,3 +78,24 @@ export function requireRoles(...roles: string[]) {
         next();
     };
 }
+
+export function optionalAuth(req: Request, res: Response, next: NextFunction) {
+    try {
+        let token: string | undefined;
+        const authHeader = req.headers.authorization;
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.split(' ')[1];
+        }
+        if (!token && req.cookies?.accessToken) {
+            token = req.cookies.accessToken;
+        }
+
+        if (token) {
+            const payload = verifyAccessToken(token);
+            req.user = payload;
+        }
+    } catch {
+        // Continue unauthenticated
+    }
+    next();
+}

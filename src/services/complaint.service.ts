@@ -456,12 +456,19 @@ export async function addComplaintFeedback(
 
     const feedback = await prisma.feedback.upsert({
         where: { complaintId },
-        update: { rating, comment },
+        update: {
+            rating,
+            comment: comment || '',
+            citizenName: citizenName || 'Verified Citizen',
+        },
         create: {
             complaintId,
             citizenId,
+            citizenName: citizenName || 'Verified Citizen',
+            category: complaint.category,
             rating,
-            comment,
+            comment: comment || '',
+            status: 'APPROVED',
         },
     });
 

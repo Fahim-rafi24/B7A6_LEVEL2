@@ -77,16 +77,24 @@ model ComplaintTimeline {
 }
 
 model Feedback {
-    id          String    @id @default(uuid())
-    complaintId String    @unique
-    complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+    id                      String     @id @default(uuid())
+    complaintId             String?    @unique
+    complaint               Complaint? @relation(fields: [complaintId], references: [id], onDelete: Cascade)
 
-    citizenId   String
-    citizen     User      @relation(fields: [citizenId], references: [id])
+    citizenId               String?
+    citizen                 User?      @relation(fields: [citizenId], references: [id])
 
-    rating      Int       @default(5)
-    comment     String?
-    createdAt   DateTime  @default(now())
+    citizenName             String?
+    citizenEmail            String?
+    category                String?    @default("General City Feedback")
+    rating                  Int        @default(5)
+    comment                 String
+    status                  String     @default("PENDING")
+    moderatedBy             String?
+    moderatedAt             DateTime?
+    isFeatured              Boolean    @default(false)
+    createdAt               DateTime   @default(now())
+    updatedAt               DateTime   @updatedAt
 
     @@map("feedbacks")
 }
@@ -94,8 +102,8 @@ model Feedback {
 model FeedbackDel {
     id                 String   @id @default(uuid())
     originalFeedbackId String
-    complaintId        String
-    citizenId          String
+    complaintId        String?
+    citizenId          String?
     rating             Int
     comment            String?
     dataSnapshot       Json

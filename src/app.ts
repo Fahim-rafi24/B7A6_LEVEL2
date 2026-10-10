@@ -7,6 +7,8 @@ import userRoutes from './routes/user.routes';
 import complaintRoutes from './routes/complaint.routes';
 import paymentRoutes from './routes/payment.routes';
 import adminRoutes from './routes/admin.routes';
+import feedbackRoutes from './routes/feedback.routes';
+import contactRoutes from './routes/contact.routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { apiLimiter } from './middlewares/rateLimiter.middleware';
 import { env } from './config/env';
@@ -28,7 +30,7 @@ app.use(apiLimiter);
 
 // ── CORS & Body Parsers ──
 app.use(cors({
-    origin: [env.SITE_URL, 'https://b7-a7-level-2-git-main-kazirafibd-3971s-projects.vercel.app', 'https://b7-a7-level-2.vercel.app', 'https://b7-a7-level-2-9nehif21m-kazirafibd-3971s-projects.vercel.app'],
+    origin: [env.SITE_URL, 'http://192.168.68.115:3000', 'http://localhost:5000'],
     credentials: true,
 }));
 app.use(express.json({ limit: env.URL_FILE_SIZE }));
@@ -62,12 +64,16 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/complaints', complaintRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/feedbacks', feedbackRoutes);
+app.use('/api/v1/contacts', contactRoutes);
 
 // ── Backwards Compatible Route Aliases ──
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
+app.use('/api/contacts', contactRoutes);
 
 // ── 404 Route Handler ──
 app.use((req: Request, res: Response) => {
