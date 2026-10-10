@@ -28,7 +28,7 @@ app.use(apiLimiter);
 
 // ── CORS & Body Parsers ──
 app.use(cors({
-    origin: [env.SITE_URL, 'http://localhost:5173', 'http://localhost:3000'],
+    origin: [env.SITE_URL, 'https://b7-a7-level-2-git-main-kazirafibd-3971s-projects.vercel.app', 'https://b7-a7-level-2.vercel.app', 'https://b7-a7-level-2-9nehif21m-kazirafibd-3971s-projects.vercel.app'],
     credentials: true,
 }));
 app.use(express.json({ limit: env.URL_FILE_SIZE }));
