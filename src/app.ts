@@ -30,7 +30,7 @@ app.use(apiLimiter);
 
 // ── CORS & Body Parsers ──
 app.use(cors({
-    origin: [env.SITE_URL, 'http://192.168.68.115:3000', 'http://localhost:5000'],
+    origin: [env.SITE_URL, 'http://192.168.68.115:3000', 'http://localhost:5000', 'https://b7-a7-level-2.vercel.app'],
     credentials: true,
 }));
 app.use(express.json({ limit: env.URL_FILE_SIZE }));
